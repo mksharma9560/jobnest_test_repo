@@ -1,0 +1,82 @@
+services:
+#  postgres:
+#    container_name: postgres_container
+#    image: postgres
+#    environment:
+#      POSTGRES_USER: root
+#      POSTGRES_PASSWORD: root
+#      PGDATA: /data/postgres
+#    volumes:
+#      - postgres:/data/postgres
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - my_custom_network
+#    restart: unless-stopped
+#
+#  pgadmin:
+#    container_name: pgadmin_container
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#      PGADMIN_CONFIG_SERVER_MODE: 'False'
+#      PGDATA: /data/postgres
+#    volumes:
+#      - pgadmin:/var/lib/pgadmin
+#    ports:
+#      - "5050:80"
+#    networks:
+#      - my_custom_network
+#    restart: unless-stopped
+
+  mysql:
+    container_name: mysql_container
+    image: mysql:8.0.27
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: mysqldb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - my_custom_network
+    restart: unless-stopped
+
+  phpmyadmin:
+    container_name: phpmyadmin_container
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+    networks:
+      - my_custom_network
+    restart: unless-stopped
+    depends_on:
+      - mysql
+
+#  zipkin:
+#    image: openzipkin/zipkin
+#    container_name: zipkin
+#    ports:
+#      - 9411:9411
+#    networks:
+#      - my_custom_network
+
+
+networks:
+  my_custom_network:
+    driver: bridge
+
+volumes:
+#  postgres:
+#  pgadmin:
+  mysql:
+  phpmyadmin:
+#  zipin:
